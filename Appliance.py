@@ -1,21 +1,40 @@
 import numpy
-import matplotlib.pyplot as plt
+
 
 #https://docs.scipy.org/doc/numpy-1.15.1/reference/generated/numpy.random.randn.html
-mean = 3
-SD = 1
 
-data = numpy.random.randn() * SD + mean
 
-plt.hist(data,bins=50,color="lightblue")
-plt.show()
+
+    
+
+
 class Appliance():
-    def __init__(self,name,power_rating_deviation,power_rating_mean):
+    def __init__(self,name,on_matrix,mean_power,power_devation):
         self.name: str = name
-        self.power_rating_deviation = power_rating_deviation
-        self.power_rating_mean = power_rating_mean
-        self.power_typical = numpy.random.randn() * SD + mean
+        self.mean_power = mean_power
+        self.power_devation = power_devation
+
+    
 
         
 class PersonalAppliance(Appliance):
-    pass
+    def __init__(self,name,on_matrix,mean_power,power_devation,prob_ownership):
+        Appliance.__init__(self,name,on_matrix,mean_power,power_devation)
+        self.prob_ownership = prob_ownership
+
+class HouseholdAppliance(Appliance):
+    def __init__(self,name,on_matrix,mean_power,power_devation,prob_ownership):
+        Appliance.__init__(self,name,on_matrix,mean_power,power_devation)
+        self.prob_ownership = prob_ownership
+
+def createAppliances(path_to_appliances_definition):
+    data_file = open(path_to_appliances_definition,"r")
+    
+    while True:
+        line = data_file.readline()
+        if(line == ""):
+            print("[Notice]: End Of File Reached")
+            break
+        else:
+            line = line.replace("\n","")
+            #values = line.
