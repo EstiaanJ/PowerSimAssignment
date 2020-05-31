@@ -11,3 +11,4 @@ class HouseHold():
 
         for i in range(self.number_of_people):
             self.person_list.append(Person())
+            print("\t\t[Notice]: Created a person")
