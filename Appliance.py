@@ -27,6 +27,7 @@ class HouseholdAppliance(Appliance):
         Appliance.__init__(self,name,on_matrix,mean_power,power_devation)
         self.prob_ownership = prob_ownership
 
+#This is inspired by static factory methods from java, c# etc
 def createAppliances(path_to_appliances_definition):
     data_file = open(path_to_appliances_definition,"r")
     
