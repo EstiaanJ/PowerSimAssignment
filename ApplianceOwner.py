@@ -20,7 +20,7 @@ class ApplianceOwner():
 
     def createAppliances(self,probability_columb_index):
         data_file = open(self.path_to_appliance_definition,"r")
-        appliance_list = []
+        #appliance_list = []
         lineCount = 0
         while True:
             lineCount += 1
@@ -45,11 +45,17 @@ class ApplianceOwner():
                             print("\t\t\t\t\t[Notice]: Adding " + values[i] + " to on_matrix")
                     new_appliance.setOnMatrix(on_matrix)
                     new_appliance.setLogging(self.setLogging)
-                    appliance_list.append(new_appliance)
+                    self.appliance_list.append(new_appliance)
                     if self.logging: 
-                        print("\t\t\t\t[Notice]: Created Appliance of type: " + new_appliance.name + " which is appliance number: " + str(len(appliance_list)) + " with a typical power of: " + str(new_appliance.operational_power))
+                        print("\t\t\t\t[Notice]: Created Appliance of type: " + new_appliance.name + " which is appliance number: " + str(len(self.appliance_list)) + " with a typical power of: " + str(new_appliance.operational_power))
         if self.logging: 
-            print("\t\t\t[Notice]: Created a person with " + str(len(appliance_list)) + " appliances")
+            print("\t\t\t[Notice]: Created a person with " + str(len(self.appliance_list)) + " appliances")
+
+    def tickEnergy(self,hour_of_day) -> float:
+        sum_of_energy = 0.0
+        for i in self.appliance_list:
+            sum_of_energy += i.tickEnergy(hour_of_day)
+        return sum_of_energy
 
 
 class Person(ApplianceOwner):
@@ -69,7 +75,13 @@ class HouseHold(ApplianceOwner):
             person = Person()
             person.setLogging(self.logging)
             person.createAppliances(1)
-            self.person_list.append(Person())         
+            self.person_list.append(Person())        
+
+    def tickEnergy(self,hour_of_day) -> float:
+        sum_of_energy = super().tickEnergy(hour_of_day)
+        for i in self.person_list:
+            sum_of_energy += i.tickEnergy(hour_of_day)
+        return sum_of_energy
                 
 
 #person = Person()

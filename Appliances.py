@@ -33,6 +33,22 @@ class Appliance(ApplianceType):
     def __init__(self,name,mean_power,power_devation,operational_power):
         ApplianceType.__init__(self,name,mean_power,power_devation)
         self.operational_power = operational_power
+    
+    def isOn(self,hour_of_day) -> bool:
+        rand = random.random()
+        if rand < self.on_matrix[hour_of_day]:
+            #print("This appliance " + self.name + " is on!")
+            return True
+        else:
+            #print("This appliance " + self.name + " is off")
+            return False
+    
+    def tickEnergy(self,hour_of_day) -> float:
+        energy_consumed = 0.0
+        if self.isOn(hour_of_day):
+            energy_consumed = self.operational_power * 60.0 * 60.0 #convert from J/s to Jh
+        return energy_consumed
+        
 
 
 #This is inspired by static factory methods from java, c# etc

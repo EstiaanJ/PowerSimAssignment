@@ -35,7 +35,14 @@ class Community():
         if self.logging:
             print("[Notice]: Created community with " + str(self.number_of_households) + " households")
 
+    def tickEnergy(self,hour_of_day) -> float:
+        sum_of_energy = 0.0
+        for i in self.household_list:
+            sum_of_energy += i.tickEnergy(hour_of_day)
+        return sum_of_energy
 
-community = Community(3,3.2,1.5)
-community.setLogging(False)
-community.createHouseHolds()
+
+#community = Community(100,3.2,1.5)
+#community.setLogging(False)
+#community.createHouseHolds()
+#print(str(community.tickEnergy(5)/1000/1000))
