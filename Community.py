@@ -1,5 +1,5 @@
 
-from HouseHold import HouseHold
+from ApplianceOwner import HouseHold
 import numpy
 
 
@@ -28,7 +28,7 @@ class Community():
             house_hold = HouseHold(num_residents)
             house_hold.setLogging(self.logging)
             house_hold.createResidents()
-            house_hold.createAppliances()
+            house_hold.createAppliances(2)
             self.household_list.append(house_hold)
             if self.logging:
                 print("\t[Notice]: Created a household with " + str(num_residents) + " resident(s)")
@@ -37,5 +37,5 @@ class Community():
 
 
 community = Community(3,3.2,1.5)
-community.setLogging(True)
+community.setLogging(False)
 community.createHouseHolds()
