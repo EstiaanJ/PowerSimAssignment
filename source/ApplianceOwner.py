@@ -1,7 +1,6 @@
 import io
 import Appliances
 from pathlib import Path
-from Appliances import ApplianceType
 from Appliances import Appliance
 
 class ApplianceOwner():

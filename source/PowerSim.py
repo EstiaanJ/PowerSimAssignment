@@ -14,7 +14,7 @@ def runSimulation(households,mean,sd,days,debug):
     totalDailyEnergyInKWH = 0
     energy_list = []
 
-
+    #print(community.getSummary())
 
     for j in range(days):
         for i in range(24):

@@ -15,28 +15,13 @@ PATH_TO_APPLIANCE_DEFINITION: str = Path("PowerSimAssignment/Data/appliance_def.
 #2) Would be to have the path passed down from the owner object to the owned object via each new object's constructor, so Community -> HouseHold -> Person
 #but this adds an import all the way down that path which is only relevant to the Person and Household classes, not very ellogant either.
 
-class ApplianceType():
-    def __init__(self,name,mean_power,power_devation):
-        self.name: str = name
-        self.mean_power = mean_power
-        self.power_devation = power_devation
-        self.on_matrix = []
-        self.loging = False
-    
-    def setOnMatrix(self,on_matrix):
-        self.on_matrix = on_matrix
-    
-    def setLogging(self,logging):
-        self.logging = logging
-
-class Appliance(ApplianceType):
+class Appliance():
     def __init__(self,name,mean_power,power_devation,operational_power):
         self.name: str = name
         self.mean_power = mean_power
         self.power_devation = power_devation
         self.on_matrix = []
         self.loging = False
-        ApplianceType.__init__(self,name,mean_power,power_devation)
         self.operational_power = operational_power
 
     def setOnMatrix(self,on_matrix):
