@@ -20,7 +20,6 @@ class ApplianceOwner():
 
     def createAppliances(self,probability_columb_index):
         data_file = open(self.path_to_appliance_definition,"r")
-        #appliance_list = []
         lineCount = 0
         while True:
             lineCount += 1
