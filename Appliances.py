@@ -31,8 +31,21 @@ class ApplianceType():
 
 class Appliance(ApplianceType):
     def __init__(self,name,mean_power,power_devation,operational_power):
+        self.name: str = name
+        self.mean_power = mean_power
+        self.power_devation = power_devation
+        self.on_matrix = []
+        self.loging = False
         ApplianceType.__init__(self,name,mean_power,power_devation)
         self.operational_power = operational_power
+
+    def setOnMatrix(self,on_matrix):
+        self.on_matrix = on_matrix
+    
+    def setLogging(self,logging):
+        self.logging = logging
+
+    
 
     def getSummary(self,appliance_num,indent_num) -> str:
         if indent_num == 2:

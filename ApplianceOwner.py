@@ -8,7 +8,7 @@ class ApplianceOwner():
     def __init__(self):
         self.appliance_list = []
         self.logging: bool = False
-        self.path_to_appliance_definition = Path("PowerSimAssignment/Data/appliance_def.csv")
+        self.path_to_appliance_definition = Path("C:/Users/Estia/Source/VS Code/Python/FOP/Assignment/PowerSimAssignment/Data/appliance_def.csv")
 
 
     def setLogging(self,logging):
