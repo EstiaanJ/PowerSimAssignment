@@ -46,7 +46,7 @@ class Appliance(ApplianceType):
     def tickEnergy(self,hour_of_day) -> float:
         energy_consumed = 0.0
         if self.isOn(hour_of_day):
-            energy_consumed = self.operational_power * 60.0 * 60.0 #convert from J/s to Jh
+            energy_consumed = self.operational_power * 3600.0 #Convert from J/s to Jh 
         return energy_consumed
         
 

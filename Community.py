@@ -41,13 +41,19 @@ class Community():
             sum_of_energy += i.tickEnergy(hour_of_day)
         return sum_of_energy
     
-    def simulateDailyPowerUse(self) -> float:
+    def simulateDailyEnergyUse(self) -> float: #In Joules
         #TODO: Reset On_Grid
-        energy_used_this_hour = (self.tickEnergy(i)/(1000 * 1000))
-        totalDailyEnergyInKWH += energy_used_this_hour
-        return(energy_used_this_hour)
+        totalDailyEnergy = 0 
+        for i in range(24):
+            energy_used_this_hour = self.tickEnergy(i)
+            totalDailyEnergy += energy_used_this_hour
+            
+        return totalDailyEnergy
+
+    def simulateDailyEnergyUsekWh(self) -> float:
+        return self.simulateDailyEnergyUse/3600000.0 #Converstion scalar for Joules to kWh
         
-    def createSummery():
+    def createSummery(self):
         pass
 
 #community = Community(100,3.2,1.5)
