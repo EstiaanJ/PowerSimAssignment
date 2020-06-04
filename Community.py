@@ -40,7 +40,15 @@ class Community():
         for i in self.household_list:
             sum_of_energy += i.tickEnergy(hour_of_day)
         return sum_of_energy
-
+    
+    def simulateDailyPowerUse(self) -> float:
+        #TODO: Reset On_Grid
+        energy_used_this_hour = (self.tickEnergy(i)/(1000 * 1000))
+        totalDailyEnergyInKWH += energy_used_this_hour
+        return(energy_used_this_hour)
+        
+    def createSummery():
+        pass
 
 #community = Community(100,3.2,1.5)
 #community.setLogging(False)
