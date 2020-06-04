@@ -33,6 +33,23 @@ class Appliance(ApplianceType):
     def __init__(self,name,mean_power,power_devation,operational_power):
         ApplianceType.__init__(self,name,mean_power,power_devation)
         self.operational_power = operational_power
+
+    def getSummary(self,appliance_num,indent_num) -> str:
+        if indent_num == 2:
+            summary = "\t\t--- Appliance " + str(appliance_num) + " summary--- \n"
+            summary += "\t\tAppliance Type: " + self.name + "\n"
+            summary += "\t\tMean power of a " + self.name + ": " + str(self.mean_power) + " W\n"
+            summary += "\t\tStandard Deviation of the power, of a " + self.name + ": " + str(self.power_devation) + " W\n"
+            summary += "\t\tThis appliance's typical power: " + str(self.operational_power) + " W\n"
+            summary += "\t\t### End of appliance's summary ###\n"
+        else:
+            summary = "\t\t\t--- Appliance " + str(appliance_num) + " summary--- \n"
+            summary += "\t\t\tAppliance Type: " + self.name + "\n"
+            summary += "\t\t\tMean power of a " + self.name + ": " + str(self.mean_power) + " W\n"
+            summary += "\t\t\tStandard Deviation of the power, of a " + self.name + ": " + str(self.power_devation) + " W\n"
+            summary += "\t\t\tThis appliance's typical power: " + str(self.operational_power) + " W\n"
+            summary += "\t\t\t### End of appliance's summary ###\n"
+        return summary 
     
     def isOn(self,hour_of_day) -> bool:
         rand = random.random()
@@ -42,7 +59,7 @@ class Appliance(ApplianceType):
         else:
             #print("This appliance " + self.name + " is off")
             return False
-    
+
     def tickEnergy(self,hour_of_day) -> float:
         energy_consumed = 0.0
         if self.isOn(hour_of_day):

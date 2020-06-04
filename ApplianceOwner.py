@@ -60,6 +60,18 @@ class ApplianceOwner():
 class Person(ApplianceOwner):
     def __init__(self):
         ApplianceOwner.__init__(self)
+    
+    def getSummary(self,person_num) -> str:
+        summary = "\t\t--- Person " + str(person_num) + "'s summary--- \n"
+        summary += "\t\tNo. Appliances: " + str(len(self.appliance_list)) + "\n"
+
+        summary += "\t\t*** Summary of personal appliances: *** \n"
+        for i in range(len(self.appliance_list)):
+            summary += self.appliance_list[i].getSummary(i,3) + "\n"
+
+        summary += "\t\t### End of person's summary ###\n"
+        return summary
+        
 
 
 class HouseHold(ApplianceOwner):
@@ -81,6 +93,23 @@ class HouseHold(ApplianceOwner):
         for i in self.person_list:
             sum_of_energy += i.tickEnergy(hour_of_day)
         return sum_of_energy
+    
+    def getSummary(self,household_num) -> str:
+        summary = "\t--- Household " + str(household_num) + " summary--- \n"
+        summary += "\tNo. People: " + str(len(self.person_list)) +"\n"
+        summary += "\tNo. Appliances: " + str(len(self.appliance_list)) + "\n"
+
+        summary += "\t*** Summary of household persons: *** \n"
+        for i in range(len(self.person_list)):
+            summary += self.person_list[i].getSummary(i) + "\n"
+
+        summary += "\t*** Summary of household appliances: *** \n"
+        for i in range(len(self.appliance_list)):
+            summary +=  self.appliance_list[i].getSummary(i,2) + "\n"
+        
+        summary += "\t### End of household summary ###\n"
+        return summary
+
                 
 
 #person = Person()

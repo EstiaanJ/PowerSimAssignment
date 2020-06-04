@@ -41,22 +41,34 @@ class Community():
             sum_of_energy += i.tickEnergy(hour_of_day)
         return sum_of_energy
     
-    def simulateDailyEnergyUse(self) -> float: #In Joules
+    def simulateDailyEnergyUse(self): #In Joules
         #TODO: Reset On_Grid
-        totalDailyEnergy = 0 
+        energy_list = []
         for i in range(24):
             energy_used_this_hour = self.tickEnergy(i)
-            totalDailyEnergy += energy_used_this_hour
-            
-        return totalDailyEnergy
+            energy_list.append(energy_used_this_hour)
+        return energy_list
 
     def simulateDailyEnergyUsekWh(self) -> float:
-        return self.simulateDailyEnergyUse/3600000.0 #Converstion scalar for Joules to kWh
+        energy_list = self.simulateDailyEnergyUse()
+        for i in energy_list:
+            i = i/36000000.0 #Converstion scalar for Joules to kWh
+        return energy_list
         
-    def createSummery(self):
-        pass
+        
+    def getSummary(self):
+        summary = "--- Summary of community ---\n"
+        summary += "Households: " + str(len(self.household_list)) + "\n"
+        summary += "*** Summary of Households *** \n"
+        for i in range(len(self.household_list)):
+            summary += self.household_list[i].getSummary(i) + "\n"
+        
+        summary += "### End of community summary ###\n"
 
-#community = Community(100,3.2,1.5)
+        return summary
+
+#community = Community(2,3.2,1.5)
 #community.setLogging(False)
 #community.createHouseHolds()
+#print(community.getSummary())
 #print(str(community.tickEnergy(5)/1000/1000))
