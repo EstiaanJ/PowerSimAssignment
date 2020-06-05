@@ -7,7 +7,8 @@ class ApplianceOwner():
     def __init__(self):
         self.appliance_list = []
         self.logging: bool = False
-        self.path_to_appliance_definition = Path("C:/Users/Estia/Source/VS Code/Python/FOP/Assignment/PowerSimAssignment/Data/appliance_def.csv")
+        #This is supposed to be platfrom agnostic between mac, windows and linux, but it didn't always work for me on Windows (Had to resort to absolute path), didn't test on mac.
+        self.path_to_appliance_definition = Path("PowerSimAssignment/Data/appliance_def.csv")
 
 
     def setLogging(self,logging):
