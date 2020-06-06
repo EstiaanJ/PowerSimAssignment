@@ -23,10 +23,8 @@ class ApplianceOwner():
         #Platform agnostic path
         self.path_to_appliance_definition: str = Path("../PowerSimAssignment/Data/appliance_def.csv")
 
-
     def setLogging(self,logging: bool):
         self.logging = logging
-
 
     def setPath(self,path: str):
         self.path_to_appliance_definition = Path(path)
@@ -93,21 +91,7 @@ class HouseHold(ApplianceOwner):
         self.number_of_people: int = number_of_people
         self.person_list: Person = []
 
-
-    def createResidents(self):
-        for i in range(self.number_of_people):
-            person = Person()
-            person.setLogging(self.logging)
-            person.createAppliances(1)
-            self.person_list.append(Person())        
-
-    def tickEnergy(self,hour_of_day: int) -> float:
-        sum_of_energy = super().tickEnergy(hour_of_day)
-        for i in self.person_list:
-            sum_of_energy += i.tickEnergy(hour_of_day)
-        return sum_of_energy
-    
-    def getSummary(self,household_num: int) -> str:
+     def getSummary(self,household_num: int) -> str:
         summary = "\t--- Household " + str(household_num) + " summary--- \n"
         summary += "\tNo. People: " + str(len(self.person_list)) +"\n"
         summary += "\tNo. Appliances: " + str(len(self.appliance_list)) + "\n"
@@ -123,6 +107,20 @@ class HouseHold(ApplianceOwner):
         summary += "\t### End of household summary ###\n"
         return summary
 
+    def createResidents(self):
+        for i in range(self.number_of_people):
+            person = Person()
+            person.setLogging(self.logging)
+            person.createAppliances(1)
+            self.person_list.append(Person())        
+
+    def tickEnergy(self,hour_of_day: int) -> float:
+        sum_of_energy = super().tickEnergy(hour_of_day)
+        for i in self.person_list:
+            sum_of_energy += i.tickEnergy(hour_of_day)
+        return sum_of_energy
+    
+   
                 
 
 #person = Person()

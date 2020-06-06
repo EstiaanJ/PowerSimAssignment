@@ -12,6 +12,18 @@ class Community():
         self.household_list: HouseHold = []
         self.logging: bool = False
 
+    #Not sure if this is technically an accessor method or more like a toString() method from java, had to make a call.
+    def getSummary(self) -> str:
+        summary = "--- Summary of community ---\n"
+        summary += "Households: " + str(len(self.household_list)) + "\n"
+        summary += "*** Summary of Households *** \n"
+        for i in range(len(self.household_list)):
+            summary += self.household_list[i].getSummary(i) + "\n"
+        
+        summary += "### End of community summary ###\n"
+
+        return summary
+
     def setLogging(self,logging: bool):
         self.logging = logging 
         
@@ -56,16 +68,7 @@ class Community():
         return energy_list
         
         
-    def getSummary(self) -> str:
-        summary = "--- Summary of community ---\n"
-        summary += "Households: " + str(len(self.household_list)) + "\n"
-        summary += "*** Summary of Households *** \n"
-        for i in range(len(self.household_list)):
-            summary += self.household_list[i].getSummary(i) + "\n"
-        
-        summary += "### End of community summary ###\n"
-
-        return summary
+    
 
 #community = Community(2,3.2,1.5)
 #community.setLogging(False)

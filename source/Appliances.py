@@ -24,15 +24,16 @@ class Appliance():
         self.loging: bool = False
         self.operational_power: float = operational_power
 
-    def setOnMatrix(self,on_matrix):
-        self.on_matrix = on_matrix
-    
-    def setLogging(self,logging):
-        self.logging = logging
+    def isOn(self,hour_of_day: int) -> bool:
+        rand = random.random()
+        if rand < self.on_matrix[hour_of_day]:
+            #print("This appliance " + self.name + " is on!")
+            return True
+        else:
+            #print("This appliance " + self.name + " is off")
+            return False
 
-    
-
-    def getSummary(self,appliance_num,indent_num) -> str:
+    def getSummary(self,appliance_num: int,indent_num: int) -> str:
         if indent_num == 2:
             summary = "\t\t--- Appliance " + str(appliance_num) + " summary--- \n"
             summary += "\t\tAppliance Type: " + self.name + "\n"
@@ -48,17 +49,14 @@ class Appliance():
             summary += "\t\t\tThis appliance's typical power: " + str(self.operational_power) + " W\n"
             summary += "\t\t\t### End of appliance's summary ###\n"
         return summary 
-    
-    def isOn(self,hour_of_day) -> bool:
-        rand = random.random()
-        if rand < self.on_matrix[hour_of_day]:
-            #print("This appliance " + self.name + " is on!")
-            return True
-        else:
-            #print("This appliance " + self.name + " is off")
-            return False
 
-    def tickEnergy(self,hour_of_day) -> float:
+    def setOnMatrix(self,on_matrix):
+        self.on_matrix = on_matrix
+    
+    def setLogging(self,logging: bool):
+        self.logging = logging
+
+    def tickEnergy(self,hour_of_day: int) -> float:
         energy_consumed = 0.0
         if self.isOn(hour_of_day):
             energy_consumed = self.operational_power * 3600.0 #Convert from J/s to Jh TODO: This is wrong, should be 217000
