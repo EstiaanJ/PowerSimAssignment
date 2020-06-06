@@ -6,13 +6,13 @@ import numpy
 
 class Community():
     def __init__(self,number_of_households,mean_residents,sd_residents):
-        self.number_of_households = number_of_households
-        self.mean_residents = mean_residents
-        self.sd_residents = sd_residents
-        self.household_list = []
-        self.logging = False
+        self.number_of_households: int = number_of_households
+        self.mean_residents: float = mean_residents
+        self.sd_residents: float = sd_residents
+        self.household_list: HouseHold = []
+        self.logging: bool = False
 
-    def setLogging(self,logging):
+    def setLogging(self,logging: bool):
         self.logging = logging 
         
         #Printing out statements can take a long time, especially if it's being done in a for loop, within a for loop, within a for loop and so on. Checking a boolean statment is much quicker
@@ -35,7 +35,7 @@ class Community():
         if self.logging:
             print("[Notice]: Created community with " + str(self.number_of_households) + " households")
 
-    def tickEnergy(self,hour_of_day) -> float:
+    def tickEnergy(self,hour_of_day: int) -> float:
         sum_of_energy = 0.0
         for i in self.household_list:
             sum_of_energy += i.tickEnergy(hour_of_day)
@@ -56,7 +56,7 @@ class Community():
         return energy_list
         
         
-    def getSummary(self):
+    def getSummary(self) -> str:
         summary = "--- Summary of community ---\n"
         summary += "Households: " + str(len(self.household_list)) + "\n"
         summary += "*** Summary of Households *** \n"

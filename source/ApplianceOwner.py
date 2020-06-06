@@ -4,21 +4,34 @@ from pathlib import Path
 from Appliances import Appliance
 
 class ApplianceOwner():
+    """
+    Appliance owners are objects that can own an appliance, and therefore has an instance field that is a list of owned appliances
+
+    Attributes
+    ----------
+    appliance_list : Appliance[]
+        A list of appliances owned by this appliance owner
+    logging : bool
+        logging and deugging on or off, True for on
+    path_to_appliance_definition : str
+        path to the appliance definition file (default "PowerSimAssignment/Data/appliance_def.csv")
+
+    """
     def __init__(self):
-        self.appliance_list = []
+        self.appliance_list: Appliance = []
         self.logging: bool = False
-        #This is supposed to be platfrom agnostic between mac, windows and linux, but it didn't always work for me on Windows (Had to resort to absolute path), didn't test on mac.
-        self.path_to_appliance_definition = Path("PowerSimAssignment/Data/appliance_def.csv")
+        #Platform agnostic path
+        self.path_to_appliance_definition: str = Path("../PowerSimAssignment/Data/appliance_def.csv")
 
 
-    def setLogging(self,logging):
+    def setLogging(self,logging: bool):
         self.logging = logging
 
 
-    def setPath(self,path):
-        self.path_to_appliance_definition = path
+    def setPath(self,path: str):
+        self.path_to_appliance_definition = Path(path)
 
-    def createAppliances(self,probability_columb_index):
+    def createAppliances(self,probability_columb_index: int):
         data_file = open(self.path_to_appliance_definition,"r")
         lineCount = 0
         while True:
@@ -50,7 +63,7 @@ class ApplianceOwner():
         if self.logging: 
             print("\t\t\t[Notice]: Created a person with " + str(len(self.appliance_list)) + " appliances")
 
-    def tickEnergy(self,hour_of_day) -> float:
+    def tickEnergy(self,hour_of_day: int) -> float:
         sum_of_energy = 0.0
         for i in self.appliance_list:
             sum_of_energy += i.tickEnergy(hour_of_day)
@@ -61,7 +74,7 @@ class Person(ApplianceOwner):
     def __init__(self):
         ApplianceOwner.__init__(self)
     
-    def getSummary(self,person_num) -> str:
+    def getSummary(self,person_num: int) -> str:
         summary = "\t\t--- Person " + str(person_num) + "'s summary--- \n"
         summary += "\t\tNo. Appliances: " + str(len(self.appliance_list)) + "\n"
 
@@ -77,8 +90,8 @@ class Person(ApplianceOwner):
 class HouseHold(ApplianceOwner):
     def __init__(self,number_of_people):
         ApplianceOwner.__init__(self)
-        self.number_of_people = number_of_people
-        self.person_list = []
+        self.number_of_people: int = number_of_people
+        self.person_list: Person = []
 
 
     def createResidents(self):
@@ -88,13 +101,13 @@ class HouseHold(ApplianceOwner):
             person.createAppliances(1)
             self.person_list.append(Person())        
 
-    def tickEnergy(self,hour_of_day) -> float:
+    def tickEnergy(self,hour_of_day: int) -> float:
         sum_of_energy = super().tickEnergy(hour_of_day)
         for i in self.person_list:
             sum_of_energy += i.tickEnergy(hour_of_day)
         return sum_of_energy
     
-    def getSummary(self,household_num) -> str:
+    def getSummary(self,household_num: int) -> str:
         summary = "\t--- Household " + str(household_num) + " summary--- \n"
         summary += "\tNo. People: " + str(len(self.person_list)) +"\n"
         summary += "\tNo. Appliances: " + str(len(self.appliance_list)) + "\n"

@@ -18,11 +18,11 @@ PATH_TO_APPLIANCE_DEFINITION: str = Path("PowerSimAssignment/Data/appliance_def.
 class Appliance():
     def __init__(self,name,mean_power,power_devation,operational_power):
         self.name: str = name
-        self.mean_power = mean_power
-        self.power_devation = power_devation
-        self.on_matrix = []
-        self.loging = False
-        self.operational_power = operational_power
+        self.mean_power: float = mean_power
+        self.power_devation: float = power_devation
+        self.on_matrix: float = []
+        self.loging: bool = False
+        self.operational_power: float = operational_power
 
     def setOnMatrix(self,on_matrix):
         self.on_matrix = on_matrix
@@ -61,8 +61,11 @@ class Appliance():
     def tickEnergy(self,hour_of_day) -> float:
         energy_consumed = 0.0
         if self.isOn(hour_of_day):
-            energy_consumed = self.operational_power * 3600.0 #Convert from J/s to Jh 
+            energy_consumed = self.operational_power * 3600.0 #Convert from J/s to Jh TODO: This is wrong, should be 217000
         return energy_consumed
+
+class SolarPannel(Appliance):
+    pass
         
 
 
