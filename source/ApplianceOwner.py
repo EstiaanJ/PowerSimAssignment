@@ -91,7 +91,7 @@ class HouseHold(ApplianceOwner):
         self.number_of_people: int = number_of_people
         self.person_list: Person = []
 
-     def getSummary(self,household_num: int) -> str:
+    def getSummary(self,household_num: int) -> str:
         summary = "\t--- Household " + str(household_num) + " summary--- \n"
         summary += "\tNo. People: " + str(len(self.person_list)) +"\n"
         summary += "\tNo. Appliances: " + str(len(self.appliance_list)) + "\n"
