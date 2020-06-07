@@ -1,7 +1,13 @@
+#Energy Stats V0.0.0
+#Author: Estiaan Janse Van Rensburg 
+#Curtin University, Bently, Western Australia
+#ID 18091649
+
 import io
 import Appliances
 from pathlib import Path
 from Appliances import Appliance
+
 
 class ApplianceOwner():
     """
@@ -21,10 +27,15 @@ class ApplianceOwner():
         self.appliance_list: Appliance = []
         self.logging: bool = False
         #Platform agnostic path
+        self.solar_panel_status = False
         self.path_to_appliance_definition: str = Path("../PowerSimAssignment/Data/appliance_def.csv")
+        self.has_solar_panel = False
 
     def setLogging(self,logging: bool):
         self.logging = logging
+
+    def setSolarPanelStatus(self, status: bool):
+        self.solar_panel_status = status
 
     def setPath(self,path: str):
         self.path_to_appliance_definition = Path(path)
@@ -39,13 +50,19 @@ class ApplianceOwner():
                 if self.logging: 
                     print("\t\t\t[Notice]: End Of File Reached")
                 break
-            elif lineCount == 1:
-                if self.logging: 
-                    print("\t\t\t[Notice]: Skipping first line")
             else:
                 line = line.replace("\n","")
                 values = line.split(",")
-                new_appliance = Appliances.createAppliance(values[0],float(values[probability_columb_index]),float(values[3]),float(values[4]))  #(name, prob_ownership, mean_power, power_devation)
+                if values[0] == "Solar Panel":
+                    #print(self.solar_panel_status)
+                    if self.solar_panel_status:
+                        new_appliance = Appliances.createSolarPanel(values[0],float(values[probability_columb_index]),float(values[3]),float(values[4]))  #(name, prob_ownership, mean_power, power_devation)
+                        self.has_solar_panel = True
+                        #print("Created Solar Panel")
+                        if self.logging:
+                            print("Created Solar Panel")
+                else:
+                    new_appliance = Appliances.createAppliance(values[0],float(values[probability_columb_index]),float(values[3]),float(values[4]))  #(name, prob_ownership, mean_power, power_devation)
                 
                 if new_appliance != None:
                     on_matrix = []
@@ -61,11 +78,7 @@ class ApplianceOwner():
         if self.logging: 
             print("\t\t\t[Notice]: Created a person with " + str(len(self.appliance_list)) + " appliances")
 
-    def tickEnergy(self,hour_of_day: int) -> float:
-        sum_of_energy = 0.0
-        for i in self.appliance_list:
-            sum_of_energy += i.tickEnergy(hour_of_day)
-        return sum_of_energy
+    
 
 
 class Person(ApplianceOwner):
@@ -82,7 +95,18 @@ class Person(ApplianceOwner):
 
         summary += "\t\t### End of person's summary ###\n"
         return summary
-        
+    
+    def getNumberOfAppliances(self):
+        return len(self.appliance_list)
+
+    def tickEnergy(self,hour_of_day: int) -> float:
+        sum_of_energy = 0.0
+        #print("This person has " + str(len(self.appliance_list)) + " Appliances")
+        #print("But this person also has " + str(self.getNumberOfAppliances()) + " Appliances")
+        for i in self.appliance_list:
+            sum_of_energy += i.tickEnergy(hour_of_day)
+            #print("ApplianceOwner: " + " consumed: " + str(sum_of_energy/3600000) + " kWh at: " + str(hour_of_day))
+        return sum_of_energy
 
 
 class HouseHold(ApplianceOwner):
@@ -112,12 +136,20 @@ class HouseHold(ApplianceOwner):
             person = Person()
             person.setLogging(self.logging)
             person.createAppliances(1)
-            self.person_list.append(Person())        
+            #print(str(person.getNumberOfAppliances()))
+            self.person_list.append(person)
+            #HAHAHAH! I struggled to find this bug, for something like 6 hours! This line was self.person_list.append(Person()) not self.person_list.append(person), Person() NOT person OMFG! No wonder the people had no appliances, fml.        
 
     def tickEnergy(self,hour_of_day: int) -> float:
-        sum_of_energy = super().tickEnergy(hour_of_day)
+        sum_of_energy_appliances = 0.0
+        sum_of_energy_people = 0.0
+        for i in self.appliance_list:
+            sum_of_energy_appliances += i.tickEnergy(hour_of_day)
         for i in self.person_list:
-            sum_of_energy += i.tickEnergy(hour_of_day)
+            sum_of_energy_people += i.tickEnergy(hour_of_day)
+        sum_of_energy = sum_of_energy_people + sum_of_energy_appliances
+        #print("Household: " + " consumed: " + str(sum_of_energy/3600000) + " kWh at: " + str(hour_of_day))
+        #print("People in Household: " + " consumed: " + str(sum_of_energy_people/3600000) + " kWh at: " + str(hour_of_day))
         return sum_of_energy
     
    

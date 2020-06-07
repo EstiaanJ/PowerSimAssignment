@@ -6,11 +6,11 @@ from tkinter import BooleanVar
 
 
 
-def runSimulation(households,mean,sd,days,debug):
+def runSimulation(households,mean,sd,days,debug,solar):
     community = Community(households,mean,sd)
     community.setLogging(debug)
+    community.setSolarPanelStatus(solar)
     community.createHouseHolds()
-    #print(str(community.tickEnergy(5)/1000/1000))
     totalDailyEnergyInKWH = 0
     energy_list = []
 
@@ -18,9 +18,9 @@ def runSimulation(households,mean,sd,days,debug):
 
     for j in range(days):
         for i in range(24):
-            energy_used_this_hour = (community.tickEnergy(i)/(1000 * 1000))
-            totalDailyEnergyInKWH += energy_used_this_hour
-            energy_list.append(energy_used_this_hour)
+            energy_used_this_hour_kWh = (community.tickEnergy(i)/3600000)
+            totalDailyEnergyInKWH += energy_used_this_hour_kWh
+            energy_list.append(energy_used_this_hour_kWh)
         
 
     print(str(totalDailyEnergyInKWH) + " kWh")
@@ -35,9 +35,10 @@ def run_button():
     mean = float(entry_people.get())
     sd = float(entry_SD.get())
     days = int(entry_days.get())
-    debug = checkbox_state.get()
+    debug = checkbox_log_state.get()
+    solar = checkbox_solar_state.get()
     #TODO if days*mean*households is high, warn user this could take some time
-    runSimulation(households,mean,sd,days,debug)
+    runSimulation(households,mean,sd,days,debug,solar)
 
 
 
@@ -64,7 +65,9 @@ entry_days.grid(row=4,column=2)
 
 tk.Button(main_window,text="Run",command=run_button).grid(row=5,column=1)
 
-checkbox_state = BooleanVar()
-tk.Checkbutton(main_window,text="Enable Debug Output",variable=checkbox_state).grid(row=5,column=0)
+checkbox_log_state = BooleanVar()
+checkbox_solar_state = BooleanVar()
+tk.Checkbutton(main_window,text="Enable Debug Output",variable=checkbox_log_state).grid(row=5,column=0)
+tk.Checkbutton(main_window,text="Enable Solar Panels",variable=checkbox_solar_state).grid(row=5,column=3)
 
 main_window.mainloop()

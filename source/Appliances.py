@@ -56,14 +56,30 @@ class Appliance():
     def setLogging(self,logging: bool):
         self.logging = logging
 
+    def setSolarPanelStatus(self, status: bool):
+        self.solar_panel_status = status
+
     def tickEnergy(self,hour_of_day: int) -> float:
         energy_consumed = 0.0
         if self.isOn(hour_of_day):
-            energy_consumed = self.operational_power * 3600.0 #Convert from J/s to Jh TODO: This is wrong, should be 217000
+            energy_consumed = self.operational_power * 3600
+        #print(self.name + " consumed: " + str(energy_consumed/3600000) + " kWh at: " + str(hour_of_day))
         return energy_consumed
 
-class SolarPannel(Appliance):
-    pass
+class SolarPanel(Appliance):
+    #replacement method for isOn(hour_of_day)
+    def getLightLevel(self,hour_of_day: int) -> float:
+        return self.on_matrix[hour_of_day]
+
+    #overides parent's method
+    def tickEnergy(self,hour_of_day: int) -> float:
+        energy_generated = self.getLightLevel(hour_of_day) * self.operational_power * 3600
+        if energy_generated > 0:
+            print("[Warning]: Solar panel consumed energy")
+
+        #print("Solar panel generated: " + str(energy_generated))
+        return energy_generated
+
         
 
 
@@ -76,3 +92,14 @@ def createAppliance(name, prob_ownership, mean_power, power_devation) -> Applian
         operational_power = abs(numpy.random.randn() * power_devation + mean_power)
         return_appliance = Appliance(name,mean_power,power_devation,operational_power)
     return return_appliance
+
+def createSolarPanel(name, prob_ownership, mean_power, power_devation) -> SolarPanel:
+    rand = random.random()
+    return_appliance = None
+    if rand < prob_ownership:
+        #create solar panel
+        operational_power = numpy.random.randn() * power_devation + mean_power
+        return_appliance = SolarPanel(name,mean_power,power_devation,operational_power)
+    return return_appliance
+
+
